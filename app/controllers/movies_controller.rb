@@ -14,30 +14,31 @@ class MoviesController < ApplicationController
     #@movies = Movie.all
     @all_ratings = ["G", "PG", "PG-13", "R"]
     
+ 
+    if params["ratings"]
+      @filter = params["ratings"]
+      @movies = Movie.where(rating: params["ratings"].keys)
+    else
+      @filter = @all_ratings
+       @movies = Movie.all
+    end  
     
     if(params["sort"])
-      
       sort = params[:sort]
-      @movies = Movie.order(params["sort"])
+      @movies = @movies.order(params["sort"])
+
       if sort == "title"
-      @title_header =  'hilite'
-    else
-      @release_date ='hilite'
+        @title_header =  'hilite'
+      else
+        @release_date ='hilite'
       end
-    
-    elsif params["ratings"]
-    
-    @movies = Movie.where(rating: params["ratings"].keys)
-   
-    else
-      
-       @movies = Movie.all
-      
     end
     
-  
   end
 
+
+
+##############
   def new
     # default: render 'new' template
   end
